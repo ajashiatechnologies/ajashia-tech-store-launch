@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Launch Party</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h1 { font-size: 40px; }
+
+    #timer {
+      font-size: 70px;
+      margin: 20px;
+      font-weight: bold;
+    }
+
+    input, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      cursor: pointer;
+    }
+
+    #main, #reveal {
+      display: none;
+    }
+
+    img {
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🚀 Our Store Launch Party</h1>
+
+<!-- JOIN -->
+<div id="join">
+  <input id="name" placeholder="Enter your name">
+  <br>
+  <button onclick="join()">Join Party</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <h2 id="welcome"></h2>
+  <div id="timer">00:00</div>
+  <p>Get ready... something amazing is launching 🔥</p>
+</div>
+
+<!-- REVEAL -->
+<div id="reveal">
+  <h1>🎉 WE ARE LIVE!</h1>
+
+  <!-- 🔴 CHANGE IMAGE -->
+  <img src="https://via.placeholder.com/300" width="300">
+
+  <!-- 🔴 CHANGE NAME -->
+  <h2>MiniMorph Store</h2>
+
+  <!-- 🔴 CHANGE LINK -->
+  <a href="https://yourdomain.com" target="_blank" style="color:cyan; font-size:18px;">
+    Visit Website 🚀
+  </a>
+</div>
+
+<script>
+
+// ✅ SET YOUR LAUNCH TIME HERE
+const launchTime = new Date("2026-04-14T11:30:00+05:30").getTime();
+
+function join(){
+  let name = document.getElementById("name").value;
+
+  if(!name){
+    alert("Please enter your name");
+    return;
+  }
+
+  document.getElementById("join").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  document.getElementById("welcome").innerText = "Welcome " + name + " 👋";
+
+  const now = new Date().getTime();
+
+  if(now >= launchTime){
+    launch();
+  } else {
+    startTimer();
+  }
+}
+
+function startTimer(){
+  let interval = setInterval(()=>{
+    const now = new Date().getTime();
+    let diff = Math.floor((launchTime - now)/1000);
+
+    if(diff <= 0){
+      clearInterval(interval);
+      launch();
+      return;
+    }
+
+    let minutes = Math.floor(diff / 60);
+    let seconds = diff % 60;
+
+    document.getElementById("timer").innerText =
+      (minutes < 10 ? "0"+minutes : minutes) + ":" +
+      (seconds < 10 ? "0"+seconds : seconds);
+
+  },1000);
+}
+
+function launch(){
+  document.getElementById("main").style.display = "none";
+  document.getElementById("reveal").style.display = "block";
+
+  // 🎉 CONFETTI
+  confetti({
+    particleCount: 200,
+    spread: 120
+  });
+}
+
+</script>
+
+</body>
+</html>
